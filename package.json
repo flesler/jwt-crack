@@ -1,0 +1,29 @@
+{
+  "name": "jwt-crack",
+	"author": "Ariel Flesler <aflesler@gmail.com>",
+  "version": "0.9.0",
+  "description": "Multi-threaded brute force JWT cracker in pure Node.js",
+	"keywords": [
+    "jwt",
+    "crack",
+    "cracker",
+    "secret",
+    "brute",
+    "force",
+    "multi-thread",
+    "distributed",
+    "pure",
+    "javascript"
+  ],
+  "main": "cluster.js",
+  "bin": {
+    "jwt-crack": "cluster.js"
+  },
+  "license": "MIT",
+	"homepage": "https://github.com/flesler/jwt-crack",
+  "bugs": "https://github.com/flesler/jwt-crack/issues",
+  "repository": "git://github.com/flesler/jwt-crack",
+  "dependencies": {
+    "commander": "2.9.0"
+  }
+}
