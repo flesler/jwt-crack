@@ -1,57 +1,48 @@
 const crypto = require('crypto');
-const opts = require('commander');
-const pkg = require('./package.json');
+const util = require('./util');
 
-opts
-	.version(pkg.version)
-	.usage('<token> [options]')
-	.option('--alpha <v>', 'The alphabet', String, 'abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789')
-	.option('--max <n>', 'The maximum number of chars allowed on the secret', Number, 12)
-	.option('--offset <n>', 'Iteration start, used for multi-threading', Number, 0)
-	.option('--step <n>', 'Iteration step, used for multi-threading', Number, 1)
-	.option('--cpus <n>', 'The amount of process to spawn [default cpus]', Number)
-	.parse(process.argv);
+const env = process.env;
+const CHARS = env.CHARS;
+const MAX_LEN = +env.MAX;
+const START = +env.START;
+const INDEX = +env.INDEX;
+const STEP = +env.STEP;
+const NOTIFY_INTERVAL = 60e3;
 
-const ALPHABET = opts.alpha;
-const MAX_LEN = opts.max;
-const OFFSET = opts.offset;
-const STEP = opts.step;
+const CHARS_LEN = CHARS.length;
+const LIMIT = util.limit(CHARS, MAX_LEN);
 
-const ALPHA_LEN = ALPHABET.length;
-const LIMIT = Math.pow(ALPHA_LEN, MAX_LEN);
-const PREFFIX = STEP === 1 ? '' : '#' + OFFSET + '> ';
-
-const p = opts.args[0].split('.');
+const p = env.TOKEN.split('.');
 const signature = p.pop();
 const content = p.join('.');
 
-console.log(PREFFIX + 'Processing...');
+let nextNotify = Date.now() + NOTIFY_INTERVAL;
 
-const start = Date.now();
-
-function getElapsed() {
-  return ((Date.now() - start) / 1000 / 60 ).toFixed(1) + ' minutes';
-}
-
-for (let i = OFFSET; i < LIMIT; i += STEP) {
+for (let i = START + INDEX; i < LIMIT; i += STEP) {
   // Calculate the secret for this iteration
   let secret = '';
   let seed = i + 1;
   do {
     // Small change so it goes 9->00 rather than 9->10
-    seed--;
-    const mod = seed % ALPHA_LEN;
-    secret = ALPHABET[mod] + secret;
-    seed = (seed - mod) / ALPHA_LEN;
+    seed -= 1;
+    const mod = seed % CHARS_LEN;
+    secret = CHARS[mod] + secret;
+    seed = (seed - mod) / CHARS_LEN;
   } while (seed > 0);
-
   // Calculate signature for this secret
   const sig = crypto.createHmac('sha256', secret).update(content).digest('base64').replace('=', '');
   if (signature === sig) {
-    console.log(PREFFIX + 'Cracked secret in', i, 'attempts, took', getElapsed() + ', secret is', secret);
+    process.send({ secret, index: i });
     process.exit();
+  }
+
+  const now = Date.now();
+  if (now >= nextNotify) {
+    nextNotify = now + NOTIFY_INTERVAL;
+    // Notify progress
+    process.send({ index: i });
   }
 }
 
-console.error(PREFFIX + 'Failed to crack secret in', LIMIT, 'attempts, took', getElapsed());
+process.send({ index: LIMIT });
 process.exit(1);

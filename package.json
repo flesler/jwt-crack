@@ -1,9 +1,9 @@
 {
   "name": "jwt-crack",
-	"author": "Ariel Flesler <aflesler@gmail.com>",
-  "version": "0.9.0",
+  "author": "Ariel Flesler <aflesler@gmail.com>",
+  "version": "1.0.0",
   "description": "Multi-threaded brute force JWT cracker in pure Node.js",
-	"keywords": [
+  "keywords": [
     "jwt",
     "crack",
     "cracker",
@@ -15,15 +15,23 @@
     "pure",
     "javascript"
   ],
-  "main": "cluster.js",
+  "main": "index.js",
   "bin": {
-    "jwt-crack": "cluster.js"
+    "jwt-crack": "index.js"
   },
   "license": "MIT",
-	"homepage": "https://github.com/flesler/jwt-crack",
+  "homepage": "https://github.com/flesler/jwt-crack",
   "bugs": "https://github.com/flesler/jwt-crack/issues",
   "repository": "git://github.com/flesler/jwt-crack",
   "dependencies": {
     "commander": "2.9.0"
+  },
+  "devDependencies": {
+    "eslint": "3.8.1",
+    "eslint-config-airbnb-base": "7.1.0",
+    "eslint-plugin-import": "1.15.0"
+  },
+  "engines": {
+    "node": "6.x"
   }
 }
