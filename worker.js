@@ -3,7 +3,7 @@ const util = require('./util');
 
 const env = process.env;
 const CHARS = env.CHARS;
-const MAX_LEN = +env.MAX;
+const MAX_LEN = +env.MAX_LEN;
 const START = +env.START;
 const INDEX = +env.INDEX;
 const STEP = +env.STEP;

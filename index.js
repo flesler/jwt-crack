@@ -11,9 +11,9 @@ opts
   .version(pkg.version)
   .usage('<jwt> [options]')
   .option('--chars <v>', 'The alphabet to use to brute-force secrets', String, DEFAULT_CHARS)
-  .option('--max <n>', 'The maximum number of chars allowed on the secret', Number, 12)
-  .option('--start <n>', 'Iteration start, used for multi-threading', Number, 0)
-  .option('--cpus <n>', 'The amount of process to spawn [default cpus]', Number, 0)
+  .option('--maxlen <n>', 'The maximum length of secrets to try', Number, 12)
+  .option('--start <n>', 'Iteration start, can be used to resume a previous session', Number, 0)
+  .option('--cpus <n>', 'The amount of processes to spawn [default cpus]', Number, 0)
   .parse(process.argv);
 
 const token = opts.args[0];
@@ -22,7 +22,7 @@ if (!token || token.split('.').length !== 3) {
   opts.help();
 }
 
-const limit = util.limit(opts.chars, opts.max);
+const limit = util.limit(opts.chars, opts.maxlen);
 const cpus = opts.cpus || os.cpus().length;
 // The last reported seed of each worker
 const progress = [];
@@ -68,7 +68,7 @@ function getEnv(i) {
   return {
     TOKEN: token,
     CHARS: opts.chars,
-    MAX: opts.max,
+    MAX_LEN: opts.maxlen,
     START: progress[i],
     INDEX: i,
     STEP: cpus,

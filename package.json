@@ -1,7 +1,7 @@
 {
   "name": "jwt-crack",
   "author": "Ariel Flesler <aflesler@gmail.com>",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Multi-threaded brute force JWT cracker in pure Node.js",
   "keywords": [
     "jwt",
