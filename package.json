@@ -27,9 +27,15 @@
     "commander": "2.9.0"
   },
   "devDependencies": {
+    "crypto-js": "3.1.8",
+    "digest-js": "0.3.0",
     "eslint": "3.8.1",
     "eslint-config-airbnb-base": "7.1.0",
-    "eslint-plugin-import": "1.15.0"
+    "eslint-plugin-import": "1.15.0",
+    "fast-sha256": "1.0.0",
+    "hash.js": "1.0.3",
+    "jshashes": "1.0.5",
+    "sjcl": "1.0.6"
   },
   "engines": {
     "node": "6.x"
