@@ -13,7 +13,7 @@ const CHARS_LEN = CHARS.length;
 const LIMIT = util.limit(CHARS, MAX_LEN);
 
 const p = env.TOKEN.split('.');
-const signature = p.pop();
+const signature = util.normalizeSignature(p.pop());
 const content = p.join('.');
 
 let nextNotify = Date.now() + NOTIFY_INTERVAL;
@@ -30,7 +30,7 @@ for (let i = START + INDEX; i < LIMIT; i += STEP) {
     seed = (seed - mod) / CHARS_LEN;
   } while (seed > 0);
   // Calculate signature for this secret
-  const sig = crypto.createHmac('sha256', secret).update(content).digest('base64').replace('=', '');
+  const sig = crypto.createHmac('sha256', secret).update(content).digest('base64');
   if (signature === sig) {
     process.send({ secret, index: i });
     process.exit();
