@@ -1,5 +1,5 @@
-module.exports = {
-  payload: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIiLCJpYXQiOm51bGwsImV4cCI6bnVsbCwiYXVkIjoiIiwic3ViIjoiYXJpZWwifQ',
-  secret: 'abcdef',
-  hmac: 'gACDeFDqSARF2XOgvB4YNxOEDy5SJ9pjXFoF6bMxal0',
-};
+const crypto = require('crypto');
+
+exports.payload = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIiLCJpYXQiOm51bGwsImV4cCI6bnVsbCwiYXVkIjoiIiwic3ViIjoiYXJpZWwifQ';
+exports.secret = 'abcdef';
+exports.hmac = crypto.createHmac('sha256', exports.secret).update(exports.payload).digest('base64');
