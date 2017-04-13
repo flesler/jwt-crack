@@ -25,6 +25,7 @@
       "ignoreComments": true,
       "ignoreStrings": true,
       "ignoreTemplateLiterals": true
-    }]
+    }],
+    "no-restricted-properties": "off"
   }
 }
