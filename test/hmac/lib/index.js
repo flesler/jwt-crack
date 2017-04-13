@@ -4,7 +4,7 @@ const libs = {};
 fs.readdirSync(__dirname).forEach((file) => {
   const lib = file.replace('.js', '');
   if (lib !== 'index') {
-    // eslint-disable-next-line global-require
+    // eslint-disable-next-line
     libs[lib] = require('./' + file);
   }
 });
